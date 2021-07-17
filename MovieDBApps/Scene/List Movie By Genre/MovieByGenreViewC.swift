@@ -33,29 +33,24 @@ class MovieByGenreViewC: UIViewController, UITableViewDelegate, UITableViewDataS
         callAPI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
     func setupUI(){
         // Setup table
         tableView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
         view.addSubview(tableView)
     
+//        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Genre : \(titleGenre)"
         view.backgroundColor = .white
-//        viewModel.fetchMovieListByGenreModels(query: "\(idGenre)").observe(on: MainScheduler.instance).bind(to: tableView.rx.items(cellIdentifier: "MovieListByGenreTableViewCell")) { index, viewModel, cell in
-//            cell.textLabel?.text = viewModel.movieTitle
-//            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-//
-//            cell.detailTextLabel?.text = "Release Date : \(viewModel.movieReleaseDate)"
-//
-//            self.downloadImage(url_image + viewModel.imageURL) { image in
-//                if let image = image {
-//                    DispatchQueue.main.async {
-//                        cell.imageView?.image = image
-//                    }
-//                }else{
-//                    cell.imageView!.image = UIImage.init(named: "noImage")
-//                }
-//            }
-//        }.disposed(by: disposeBag)
     }
     
     func callAPI(){
@@ -75,19 +70,6 @@ extension MovieByGenreViewC{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MovieGenreTableViewCell.id, for: indexPath) as! MovieGenreTableViewCell
-        
-//        cell.labelTitle.text = arrResponse[indexPath.row].movieTitle.capitalized
-//        cell.labelDesc.text = "Release Date : \(arrResponse[indexPath.row].movieReleaseDate)"
-//        self.downloadImage(url_image + arrResponse[indexPath.row].imageURL) { image in
-//            if let image = image {
-//                DispatchQueue.main.async {
-//                    cell.imageMain.image = image
-////                    cell.reloadInputViews()
-//                }
-//            }else{
-//                cell.imageMain.image = UIImage.init(named: "noImage")
-//            }
-//        }
         
         cell.labelTitle.text = arrResponse[indexPath.row].movieTitle ?? "-"
         if let release = arrResponse[indexPath.row].movieReleaseDate{
@@ -110,4 +92,9 @@ extension MovieByGenreViewC{
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let viewMovie = DetailMovieViewC()
+        viewMovie.idMovie = arrResponse[indexPath.row].id
+        self.navigatePage(typePage: viewMovie)
+    }
 }

@@ -12,6 +12,7 @@ import Alamofire
 protocol MovieServiceDelegate {
     func fetchGenreMovieList() -> Observable<[ArrGenreList]>
     func fetchMovieListByGenre(query : String) -> Observable<[MovieListResults]>
+    func fetchMovieDetail(query : String) ->Observable<MovieListDetailResponse>
 }
 
 class MovieService : MovieServiceDelegate{
@@ -88,6 +89,31 @@ class MovieService : MovieServiceDelegate{
                             let decoder = JSONDecoder()
                             let dataResponse = try decoder.decode(MovieListResponse.self, from: data)
                             observer.onNext(dataResponse.results)
+                        } catch {
+                            print(error.localizedDescription)
+                            observer.onError(error)
+                        }
+                    } else {
+                        observer.onError(response.error?.localizedDescription as! Error)
+                    }
+            }
+            
+            return Disposables.create {}
+        }
+    }
+    
+    func fetchMovieDetail(query : String) -> Observable<MovieListDetailResponse>{
+        return Observable.create { observer -> Disposable in
+            AF.request(url_getMovieDetail + query, method: .get, encoding: JSONEncoding.default, headers: nil)
+                .responseJSON { response in
+                    print("REQUEST API: \(String(describing: response.request))")
+                    print("RESULT API: \(response.result)")
+                    if response.error == nil {
+                        guard let data = response.data else { return }
+                        do {
+                            let decoder = JSONDecoder()
+                            let dataResponse = try decoder.decode(MovieListDetailResponse.self, from: data)
+                            observer.onNext(dataResponse)
                         } catch {
                             print(error.localizedDescription)
                             observer.onError(error)

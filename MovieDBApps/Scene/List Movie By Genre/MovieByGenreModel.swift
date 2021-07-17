@@ -22,6 +22,10 @@ struct MovieByGenreModel{
         return movie.release_date
     }
     
+    var id : Int{
+        return movie.id
+    }
+    
     init(movie : MovieListResults) {
         self.movie = movie
     }

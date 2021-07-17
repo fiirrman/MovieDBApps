@@ -34,13 +34,17 @@ class ListMovieViewC: UIViewController, UITableViewDelegate, UITableViewDataSour
         callAPI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
     func setupUI(){
         // Setup table
         tableView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
         view.addSubview(tableView)
         
         navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.prefersLargeTitles = true
         //        navigationItem.title = "Movie Genre List"
         navigationItem.title = viewModel.title
         view.backgroundColor = .white
