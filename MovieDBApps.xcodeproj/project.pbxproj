@@ -29,6 +29,8 @@
 		5C3A826326A1CCB6009DBA05 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3A826226A1CCB6009DBA05 /* Global.swift */; };
 		5C3A826826A1CCE5009DBA05 /* ListMovieViewM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3A826726A1CCE5009DBA05 /* ListMovieViewM.swift */; };
 		5C3A827026A1CD35009DBA05 /* ListMovieViewC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3A826F26A1CD35009DBA05 /* ListMovieViewC.swift */; };
+		5CDA411726A3DC2F00B56528 /* DBRepo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5CDA411526A3DC2F00B56528 /* DBRepo.xcdatamodeld */; };
+		5CDA414926A3ECA000B56528 /* CoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDA414826A3ECA000B56528 /* CoreDataModel.swift */; };
 		68FCD90BD5C364783CE42C4F /* Pods_MovieDBAppsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F9637A00801DA2CE281C09D /* Pods_MovieDBAppsTests.framework */; };
 		E7EDE14E13DFF0507C2255AC /* Pods_MovieDBApps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44A22D3DDA72643F8474566 /* Pods_MovieDBApps.framework */; };
 /* End PBXBuildFile section */
@@ -81,6 +83,8 @@
 		5C3A826226A1CCB6009DBA05 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		5C3A826726A1CCE5009DBA05 /* ListMovieViewM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMovieViewM.swift; sourceTree = "<group>"; };
 		5C3A826F26A1CD35009DBA05 /* ListMovieViewC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMovieViewC.swift; sourceTree = "<group>"; };
+		5CDA411626A3DC2F00B56528 /* DBRepo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DBRepo.xcdatamodel; sourceTree = "<group>"; };
+		5CDA414826A3ECA000B56528 /* CoreDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataModel.swift; sourceTree = "<group>"; };
 		754375BC0D44B649649B1867 /* Pods-MovieDBAppsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieDBAppsTests.debug.xcconfig"; path = "Target Support Files/Pods-MovieDBAppsTests/Pods-MovieDBAppsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8F9637A00801DA2CE281C09D /* Pods_MovieDBAppsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieDBAppsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		903E84EA86B9EBED7927F0F6 /* Pods_MovieDBApps_MovieDBAppsUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieDBApps_MovieDBAppsUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -205,6 +209,7 @@
 				5C3A81FE26A1BC65009DBA05 /* Assets.xcassets */,
 				5C3A820026A1BC65009DBA05 /* LaunchScreen.storyboard */,
 				5C3A820326A1BC65009DBA05 /* Info.plist */,
+				5CDA411526A3DC2F00B56528 /* DBRepo.xcdatamodeld */,
 				5C3A825826A1CC76009DBA05 /* Scene */,
 				5C3A825726A1CC6D009DBA05 /* Networking */,
 				5C3A825626A1CC66009DBA05 /* Models */,
@@ -244,6 +249,7 @@
 			children = (
 				5C1D166426A2922C00FA4427 /* Tableview */,
 				5C1D162B26A2642900FA4427 /* Response.swift */,
+				5CDA414826A3ECA000B56528 /* CoreDataModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -529,6 +535,7 @@
 				5C1D16CE26A3173A00FA4427 /* DetailMovieViewM.swift in Sources */,
 				5C1D167726A2EC6200FA4427 /* MovieByGenreViewM.swift in Sources */,
 				5C1D163126A2655E00FA4427 /* MovieService.swift in Sources */,
+				5CDA411726A3DC2F00B56528 /* DBRepo.xcdatamodeld in Sources */,
 				5C1D166626A2925300FA4427 /* MovieGenreTableViewCell.swift in Sources */,
 				5C1D165826A27F5600FA4427 /* GetSessionViewC.swift in Sources */,
 				5C1D16DC26A3254A00FA4427 /* DetailViewCell.swift in Sources */,
@@ -540,6 +547,7 @@
 				5C3A826326A1CCB6009DBA05 /* Global.swift in Sources */,
 				5C3A826826A1CCE5009DBA05 /* ListMovieViewM.swift in Sources */,
 				5C1D16C926A3172A00FA4427 /* DetailMovieViewC.swift in Sources */,
+				5CDA414926A3ECA000B56528 /* CoreDataModel.swift in Sources */,
 				5C1D167C26A2EF4F00FA4427 /* MovieByGenreModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -873,6 +881,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		5CDA411526A3DC2F00B56528 /* DBRepo.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				5CDA411626A3DC2F00B56528 /* DBRepo.xcdatamodel */,
+			);
+			currentVersion = 5CDA411626A3DC2F00B56528 /* DBRepo.xcdatamodel */;
+			path = DBRepo.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 5C3A81EA26A1BC62009DBA05 /* Project object */;
 }

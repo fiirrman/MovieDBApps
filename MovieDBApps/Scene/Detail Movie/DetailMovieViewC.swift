@@ -46,7 +46,6 @@ class DetailMovieViewC: UIViewController, UITableViewDelegate, UITableViewDataSo
         tableView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
         view.addSubview(tableView)
     
-//        navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.title = "Movie Detail"
         view.backgroundColor = .white
     }
@@ -56,9 +55,39 @@ class DetailMovieViewC: UIViewController, UITableViewDelegate, UITableViewDataSo
         viewModel.fetchDetailMovie(query: "\(idMovie)" + apiKeyForm).observe(on: MainScheduler.instance).subscribe(onNext: { [self] response in
             objDetail = response
             arrGenre = response.arrGenre
+            saveData()
             tableView.reloadData()
             loadingBlock.removeFromSuperview()
+        }, onCompleted: { [self] in
+            loadData()
+            self.showErrorAlert(errorMsg: "Cannot retrieve data, please check your connection", isAction: false, title: "", typeAlert: "")
+            loadingBlock.removeFromSuperview()
         }).disposed(by: disposeBag)
+    }
+    
+    // MARK: CORE DATA PROCESS
+    func saveData(){
+        CoreDataModel.saveMovieDetail(entityName: entityMovieDetail, detailModel: objDetail!, id : idMovie)
+    }
+    
+    func loadData(){
+        let predict = NSPredicate(format: "id == \(idMovie)")
+        if(CoreDataModel.loadDataWithQueryAndEntityName(vc: UIViewController(), entityName: entityMovieDetail, predicate: predict)){
+            if(CoreDataModel.object.count > 0){
+                let objCore = CoreDataModel.object[0]
+                
+                let original_title = objCore.value(forKey: "original_title") ?? ""
+                let overview = objCore.value(forKey: "overview") ?? ""
+                let poster_path = objCore.value(forKey: "poster_path") ?? ""
+                let release_date = objCore.value(forKey: "release_date") ?? ""
+                stringJoinGenre = objCore.value(forKey: "genres") as! String
+                
+                let test = DetailMovieModel(movie: MovieListDetailResponse(genres: [], original_title: original_title as! String, overview: overview as! String, poster_path: poster_path as! String, release_date: release_date as! String))
+                objDetail = test
+                
+                tableView.reloadData()
+            }
+        }
     }
 }
 

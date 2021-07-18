@@ -13,6 +13,7 @@ class MovieByGenreViewC: UIViewController, UITableViewDelegate, UITableViewDataS
     let disposeBag = DisposeBag()
     var viewModel = MovieByGenreViewM()
     var arrResponse = [MovieByGenreModel]()
+    var refresh = UIRefreshControl()
     
     var titleGenre = ""
     var idGenre = Int()
@@ -23,6 +24,12 @@ class MovieByGenreViewC: UIViewController, UITableViewDelegate, UITableViewDataS
         table.dataSource = self
         table.tableFooterView = UIView()
         table.register(MovieGenreTableViewCell.self, forCellReuseIdentifier: MovieGenreTableViewCell.id)
+        refresh.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        if #available(iOS 10.0, *) {
+            table.refreshControl = refresh
+        } else {
+            table.addSubview(refresh)
+        }
         return table
     }()
     
@@ -48,7 +55,6 @@ class MovieByGenreViewC: UIViewController, UITableViewDelegate, UITableViewDataS
         tableView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
         view.addSubview(tableView)
     
-//        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Genre : \(titleGenre)"
         view.backgroundColor = .white
     }
@@ -56,10 +62,47 @@ class MovieByGenreViewC: UIViewController, UITableViewDelegate, UITableViewDataS
     func callAPI(){
         view.addSubview(loadingBlock)
         viewModel.fetchMovieListByGenreModels(query:"\(idGenre)&page=1").observe(on: MainScheduler.instance).subscribe(onNext: { [self] response in
-            arrResponse = response
-            tableView.reloadData()
+            if(response.count > 0){
+                arrResponse = response
+                saveData()
+                tableView.reloadData()
+            }else{
+                print("error")
+                showErrorAlert(errorMsg: "Cannot retrieve data, please check your connection", isAction: false, title: "", typeAlert: "")
+                loadData()
+            }
             loadingBlock.removeFromSuperview()
         }).disposed(by: disposeBag)
+    }
+    
+    @objc func refreshData(){
+        callAPI()
+        refresh.endRefreshing()
+    }
+    
+    // MARK: CORE DATA PROCESS
+    func saveData(){
+        CoreDataModel.saveMovieListByGenre(entityName: entityMovieByGenre, arrGenre: arrResponse)
+    }
+    
+    func loadData(){
+        let predict = NSPredicate(format: "id == \(idGenre)")
+        if(CoreDataModel.loadDataWithQueryAndEntityName(vc: UIViewController(), entityName: entityMovieByGenre, predicate: predict)){
+            if(CoreDataModel.object.count > 0){
+                arrResponse = []
+                for i in 0 ..< CoreDataModel.object.count{
+                    let objCore = CoreDataModel.object[i]
+                    let id = objCore.value(forKey: "id") as! Int
+                    let movieTitle = objCore.value(forKey: "movieTitle") ?? ""
+                    let movieReleaseDate = objCore.value(forKey: "movieReleaseDate") ?? ""
+                    let imageURL = objCore.value(forKey: "imageURL") ?? ""
+                    arrResponse.append(MovieByGenreModel(movie: MovieListResults(id: id, original_title: movieTitle as! String, poster_path: "", backdrop_path: imageURL as! String, release_date: movieReleaseDate as! String)))
+                }
+
+                tableView.reloadData()
+                print("count \(arrResponse.count)")
+            }
+        }
     }
 }
 
@@ -87,6 +130,7 @@ extension MovieByGenreViewC{
                 }
             }
         }else{
+            print("caching image work")
             cell.imageMain.image = UIImage.init(named: "noImage")
         }
         return cell

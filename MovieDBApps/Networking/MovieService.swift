@@ -69,7 +69,7 @@ class MovieService : MovieServiceDelegate{
                             }
                         }
                     } else {
-                        observer.onError(response.error?.localizedDescription as! Error)
+                        observer.onNext([])
                     }
             }
             
@@ -94,7 +94,7 @@ class MovieService : MovieServiceDelegate{
                             observer.onError(error)
                         }
                     } else {
-                        observer.onError(response.error?.localizedDescription as! Error)
+                        observer.onNext([])
                     }
             }
             
@@ -119,7 +119,7 @@ class MovieService : MovieServiceDelegate{
                             observer.onError(error)
                         }
                     } else {
-                        observer.onError(response.error?.localizedDescription as! Error)
+                        observer.onCompleted()
                     }
             }
             

@@ -30,6 +30,14 @@ let url_getMovieVideo = url_main + "movie/"
 
 // MARK: KEY
 let guestSessionKey = "guestSessionKey"
+let genreListKey = "genreListKey"
+let movieListKey = "movieListKey"
+let detailListKey = "detailListKey"
+
+// MARK: KEY ENTITY
+let entityGenre = "CDMovieGenre"
+let entityMovieByGenre = "CDMovieByGenre"
+let entityMovieDetail = "CDMovieDetail"
 
 // MARK: EXTENSION
 extension UIViewController{

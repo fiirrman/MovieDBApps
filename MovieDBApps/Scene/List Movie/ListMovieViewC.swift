@@ -14,16 +14,20 @@ class ListMovieViewC: UIViewController, UITableViewDelegate, UITableViewDataSour
     let disposeBag = DisposeBag()
     var viewModel = ListMovieViewM()
     var responseArr = [ListMovieModel]()
+    var refresh = UIRefreshControl()
     
     lazy var tableView: UITableView = {
         let table = UITableView.init()
-        //        table.translatesAutoresizingMaskIntoConstraints = false
-        //        table.backgroundColor = .lightGray
         table.delegate = self
         table.dataSource = self
         table.tableFooterView = UIView()
-        //        table.contentInsetAdjustmentBehavior = .never
         table.register(UITableViewCell.self, forCellReuseIdentifier: "MovieGenreTableViewCell")
+        refresh.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        if #available(iOS 10.0, *) {
+            table.refreshControl = refresh
+        } else {
+            table.addSubview(refresh)
+        }
         return table
     }()
     
@@ -45,27 +49,51 @@ class ListMovieViewC: UIViewController, UITableViewDelegate, UITableViewDataSour
         view.addSubview(tableView)
         
         navigationController?.navigationBar.isHidden = false
-        //        navigationItem.title = "Movie Genre List"
         navigationItem.title = viewModel.title
         view.backgroundColor = .white
-        
-        //        viewModel.fetchMovieGenreViewModels().observe(on: MainScheduler.instance).bind(to: tableView.rx.items(cellIdentifier: "MovieGenreTableViewCell")) { index, viewModel, cell in
-        //            cell.textLabel?.text = viewModel.text
-        //            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        //        }.disposed(by: disposeBag)
     }
     
     func callAPI(){
         view.addSubview(loadingBlock)
         viewModel.fetchMovieGenreViewModels().observe(on: MainScheduler.instance).subscribe(onNext: { [self] response in
-            responseArr = response
-//            viewModel.fetchMovieGenreViewModels().observe(on: MainScheduler.instance).bind(to: tableView.rx.items(cellIdentifier: "MovieGenreTableViewCell")) { index, viewModel, cell in
-//                cell.textLabel?.text = viewModel.text
-//                cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-//            }.disposed(by: disposeBag)
-            tableView.reloadData()
+            if(response.count > 0){
+                responseArr = response
+                saveData()
+                tableView.reloadData()
+            }else{
+                print("error")
+                showErrorAlert(errorMsg: "Cannot retrieve data, please check your connection", isAction: false, title: "", typeAlert: "")
+                loadData()
+            }
             loadingBlock.removeFromSuperview()
         }).disposed(by: disposeBag)
+    }
+    
+    @objc func refreshData(){
+        callAPI()
+        refresh.endRefreshing()
+    }
+    
+    // MARK: CORE DATA PROCESS
+    func saveData(){
+        CoreDataModel.saveEntityGenre(entityName: entityGenre, arrGenre: responseArr)
+    }
+    
+    func loadData(){
+        if(CoreDataModel.loadContext(vc: UIViewController(), entityName: entityGenre)){
+            if(CoreDataModel.object.count > 0){
+                responseArr = []
+                for i in 0 ..< CoreDataModel.object.count{
+                    let objCore = CoreDataModel.object[i]
+                    let id = objCore.value(forKey: "id") as! Int
+                    let name = objCore.value(forKey: "name") as! String
+                    responseArr.append(ListMovieModel(movie: ArrGenreList(id: id, name: name)))
+                }
+                
+                tableView.reloadData()
+                print("count \(responseArr.count)")
+            }
+        }
     }
 }
 
