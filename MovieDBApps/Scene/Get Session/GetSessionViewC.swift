@@ -21,7 +21,6 @@ class GetSessionViewC: UIViewController {
         
         
         setupUI()
-//        callAPI()
     }
     
     func setupUI(){
@@ -51,13 +50,6 @@ class GetSessionViewC: UIViewController {
             btnSession.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.05, constant: 19),
         ])
     }
-    
-//    func constraintsInit() {
-//        NSLayoutConstraint.activate([
-//            btnSession.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            btnSession.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-//        ])
-//    }
     
     // MARK: API REQUEST
     @objc func callAPI(){

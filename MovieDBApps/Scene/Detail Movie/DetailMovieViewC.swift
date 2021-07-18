@@ -21,7 +21,6 @@ class DetailMovieViewC: UIViewController, UITableViewDelegate, UITableViewDataSo
         let table = UITableView.init()
         table.delegate = self
         table.dataSource = self
-//        table.style = .subtitle
         table.tableFooterView = UIView()
         table.allowsSelection = false
         table.register(PosterViewCell.self, forCellReuseIdentifier: PosterViewCell.id)
@@ -98,7 +97,6 @@ extension DetailMovieViewC{
             return screenHeight * 0.4
         }else{
             return UITableView.automaticDimension
-//            return screenHeight * 0.2
         }
     }
     
@@ -146,8 +144,6 @@ extension DetailMovieViewC{
             
             return cell
         }
-        
-        return UITableViewCell()
     }
     
 }

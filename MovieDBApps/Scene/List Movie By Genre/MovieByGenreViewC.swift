@@ -67,7 +67,6 @@ class MovieByGenreViewC: UIViewController, UITableViewDelegate, UITableViewDataS
                 saveData()
                 tableView.reloadData()
             }else{
-                print("error")
                 showErrorAlert(errorMsg: "Cannot retrieve data, please check your connection", isAction: false, title: "", typeAlert: "")
                 loadData()
             }
@@ -130,7 +129,6 @@ extension MovieByGenreViewC{
                 }
             }
         }else{
-            print("caching image work")
             cell.imageMain.image = UIImage.init(named: "noImage")
         }
         return cell
