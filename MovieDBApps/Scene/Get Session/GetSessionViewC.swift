@@ -29,16 +29,35 @@ class GetSessionViewC: UIViewController {
         
         let widthBtn = screenWidth * 0.4
         let heightBtn = widthBtn * 0.3
-        let btnSession = UIButton.init(frame: CGRect(x: screenWidth / 2 - (widthBtn / 2), y: screenHeight / 2 - (heightBtn / 2), width: widthBtn, height: heightBtn))
+        //        var btnSession = UIButton.init(frame: CGRect(x: screenWidth / 2 - (widthBtn / 2), y: screenHeight / 2 - (heightBtn / 2), width: widthBtn, height: heightBtn))
+        let btnSession = UIButton(type: .system)
         btnSession.setTitle("Generate Session", for: .normal)
+        btnSession.setTitleColor(.white, for: .normal)
+//        btnSession.setTitleColor(.gray, for: .highlighted)
         btnSession.titleLabel?.adjustsFontSizeToFitWidth = true
         btnSession.titleLabel?.textColor = .white
         btnSession.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
         btnSession.backgroundColor = .red
         btnSession.layer.cornerRadius = heightBtn * 0.3
+        btnSession.translatesAutoresizingMaskIntoConstraints = false
         btnSession.addTarget(self, action: #selector(callAPI), for: .touchUpInside)
+    
         view.addSubview(btnSession)
+        
+        NSLayoutConstraint.activate([
+            btnSession.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            btnSession.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            btnSession.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.4, constant: 0),
+            btnSession.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.05, constant: 19),
+        ])
     }
+    
+//    func constraintsInit() {
+//        NSLayoutConstraint.activate([
+//            btnSession.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            btnSession.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+//        ])
+//    }
     
     // MARK: API REQUEST
     @objc func callAPI(){
