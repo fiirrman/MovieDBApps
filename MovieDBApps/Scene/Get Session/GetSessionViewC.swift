@@ -42,25 +42,6 @@ class GetSessionViewC: UIViewController {
     
     // MARK: API REQUEST
     @objc func callAPI(){
-//        var arr = [ArrGenreList]()
-//        arr.append(ArrGenreList(id: 1, name: "Action"))
-//////        arr.append(ArrGenreList(id: 2, name: "Drama"))
-////
-//        CoreDataModel.saveEntityGenre(entityName: entityGenre, arrGenre: arr)
-//
-//
-//
-////        CoreDataModel.deleteEntries(nameEntity: entityGenre)
-//
-//        if(CoreDataModel.loadContext(vc: self, entityName: entityGenre)){
-////            for i in 0 ..< CoreDataModel.object.count{
-////                let objCore = CoreDataModel.object[i]
-////                print(objCore.value(forKey: "name"))
-////            }
-//
-//            print(CoreDataModel.object.count)
-//        }
-        
         view.addSubview(loadingBlock)
         movieService.getSession().subscribe(onNext: { sessionResponse in
             self.showErrorAlert(errorMsg: "Success! Your token has created, token expires at : \(sessionResponse.expires_at))", isAction: true, title: "", typeAlert: "alertSessionCreate")
